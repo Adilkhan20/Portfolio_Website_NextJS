@@ -134,27 +134,43 @@ export default function Navbar() {
           {/* Mobile Menu Toggle */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="relative z-10 lg:hidden group"
+            className="relative z-50 lg:hidden group"
             aria-label={isOpen ? "Close menu" : "Open menu"}
             aria-expanded={isOpen}
           >
-            <div className="relative size-10 sm:size-12 flex flex-col items-center justify-center gap-1.5 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 shadow-sm group-hover:bg-white/20 group-hover:border-white/30 transition-all duration-300">
+            <div
+              className={`relative size-10 sm:size-12 flex flex-col items-center justify-center gap-1.5 rounded-xl transition-all duration-300 ${
+                isOpen
+                  ? "bg-red-500/20 border-red-500/30 border"
+                  : "bg-white/10 backdrop-blur-sm border border-white/20"
+              }`}
+            >
               <motion.span
                 animate={isOpen ? { rotate: 45, y: 6 } : { rotate: 0, y: 0 }}
-                className="w-5 h-0.5 bg-white rounded-full"
+                className={`w-5 h-0.5 rounded-full transition-colors duration-300 ${
+                  isOpen ? "bg-red-400" : "bg-white"
+                }`}
                 transition={{ duration: 0.3 }}
               />
               <motion.span
                 animate={isOpen ? { rotate: -45, y: -6 } : { rotate: 0, y: 0 }}
-                className="w-5 h-0.5 bg-white rounded-full"
+                className={`w-5 h-0.5 rounded-full transition-colors duration-300 ${
+                  isOpen ? "bg-red-400" : "bg-white"
+                }`}
                 transition={{ duration: 0.3 }}
               />
             </div>
+            {/* Close Label */}
+            {isOpen && (
+              <span className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[10px] text-red-400 font-medium whitespace-nowrap">
+                Close
+              </span>
+            )}
           </button>
         </div>
       </Container>
 
-      {/* Mobile Menu Overlay */}
+      {/* Mobile Menu Overlay - DARK THEME */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -164,16 +180,16 @@ export default function Navbar() {
             transition={{ duration: 0.3 }}
             className="fixed inset-0 z-40 lg:hidden"
           >
-            {/* Backdrop */}
+            {/* Dark Backdrop */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+              className="absolute inset-0 bg-black/80 backdrop-blur-md"
               onClick={() => setIsOpen(false)}
             />
 
-            {/* Menu Panel */}
+            {/* Dark Menu Panel */}
             <motion.div
               initial={{ x: "100%" }}
               animate={{ x: 0 }}
@@ -181,9 +197,33 @@ export default function Navbar() {
               transition={{ type: "spring", damping: 25, stiffness: 200 }}
               className="absolute right-0 top-0 h-full w-full max-w-sm bg-slate-950 border-l border-white/10 shadow-2xl"
             >
-              <div className="flex flex-col h-full pt-20 pb-8 px-6">
+              {/* Close Button at Top */}
+              <div className="flex items-center justify-between px-6 pt-6 pb-4 border-b border-white/10">
+                <span className="text-sm font-semibold text-white">Menu</span>
+                <button
+                  onClick={() => setIsOpen(false)}
+                  className="size-10 flex items-center justify-center rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 hover:bg-red-500/20 transition-all duration-300"
+                  aria-label="Close menu"
+                >
+                  <svg
+                    className="w-5 h-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </button>
+              </div>
+
+              <div className="flex flex-col h-full pb-8 px-6">
                 {/* Mobile Nav Items */}
-                <nav className="flex flex-col gap-1">
+                <nav className="flex flex-col gap-1 mt-4">
                   {navItems.map((item, index) => (
                     <motion.div
                       key={item.href}
