@@ -169,7 +169,7 @@ export default function About() {
           </h2>
 
           <p className="mt-6 text-base sm:text-lg leading-8 text-slate-400 max-w-2xl">
-            I'm a passionate full-stack developer with over 3 years of
+            I'm a passionate full-stack developer with over 1 years of
             experience in building modern web applications. I specialize in
             creating performant, scalable, and user-friendly digital solutions
             that help businesses grow and succeed in the digital landscape.

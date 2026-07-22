@@ -11,10 +11,10 @@ export default function TypewriterText() {
 
   const phrases = [
     "digital products",
-    "scalable application",
-    "modern interface",
-    "powerful backend",
-    "responsive website",
+    "scalable applications",
+    "modern interfaces",
+    "powerful backends",
+    "responsive websites",
   ];
 
   useEffect(() => {

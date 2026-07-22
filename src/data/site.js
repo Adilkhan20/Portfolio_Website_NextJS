@@ -11,9 +11,9 @@ export const siteConfig = {
   url: siteUrl,
   email,
   whatsapp: {
-    number: "923307992299", // Country code + number (bina +, spaces ya dashes ke)
+    number: "923307992299",
     message:
-      "Hi Adil! I saw your portfolio and would like to discuss a project.", // Predefined message
+      "Hi Adil! I saw your portfolio and would like to discuss a project.",
   },
   description:
     "Adil Khan is a full-stack web developer specializing in Next.js, React, Node.js, Express, MongoDB and MySQL.",
@@ -27,7 +27,7 @@ export const siteConfig = {
   ],
   social: {
     github: "https://github.com/Adilkhan20",
-    linkedin: "www.linkedin.com/in/adil-khan-7b56a8367",
+    linkedin: "https://www.linkedin.com/in/adil-khan-7b56a8367/",
     instagram: "https://www.instagram.com/adilkhan_2299?igsh=cG5peGYwdzR3Zjd0",
     tiktok: "https://www.tiktok.com/@adilkhan.2299?_r=1&_t=ZS-98E3TRuQyfc",
     facebook: "https://www.facebook.com/share/1Fae4cpQSg/",
