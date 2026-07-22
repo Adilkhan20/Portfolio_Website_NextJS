@@ -6,6 +6,11 @@ import Services from "@/components/sections/Services";
 import FeaturedProjects from "@/components/sections/FeaturedProjects";
 import ContactCTA from "@/components/sections/ContactCTA";
 
+export const metadata = {
+  title: "Home | Adil Khan",
+  description:
+    "Welcome to Adil Khan's portfolio - Full-stack developer building modern web experiences with Next.js and React.",
+};
 export default function HomePage() {
   return (
     <>

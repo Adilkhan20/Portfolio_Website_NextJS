@@ -1,4 +1,4 @@
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://iamaadilkhan.vercel.app";
 
 const email =
   process.env.NEXT_PUBLIC_CONTACT_EMAIL || "adilkhansumbal7@gmail.com";

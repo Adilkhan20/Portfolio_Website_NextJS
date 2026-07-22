@@ -9,52 +9,66 @@ const inter = Inter({
   variable: "--font-inter",
 });
 
+// /** @type {import("next").Metadata} */
 export const metadata = {
-  metadataBase: new URL(siteConfig.url),
+  metadataBase: new URL("https://iamaadilkhan.vercel.app"),
 
   title: {
-    default: `${siteConfig.name} | ${siteConfig.role}`,
-    template: `%s | ${siteConfig.name}`,
+    default: "Adil Khan | Full-Stack Developer",
+    template: "%s | Adil Khan",
   },
 
-  description: siteConfig.description,
+  description:
+    "Adil Khan is a full-stack developer specializing in Next.js, React, Node.js, and modern web applications.",
 
-  keywords: [
-    "Adil Khan",
-    "Full-Stack Developer",
-    "Next.js Developer",
-    "React Developer",
-    "MERN Stack Developer",
-    "Node.js Developer",
-    "Freelance Web Developer Pakistan",
+  applicationName: "Adil Khan Portfolio",
+
+  authors: [
+    {
+      name: "Adil Khan",
+      url: "https://iamaadilkhan.vercel.app",
+    },
   ],
 
-  authors: [{ name: siteConfig.name }],
-
-  creator: siteConfig.name,
+  creator: "Adil Khan",
 
   alternates: {
     canonical: "/",
   },
 
   openGraph: {
-    title: `${siteConfig.name} | ${siteConfig.role}`,
-    description: siteConfig.description,
-    url: siteConfig.url,
-    siteName: `${siteConfig.name} Portfolio`,
-    type: "website",
+    title: "Adil Khan | Full-Stack Developer",
+    description:
+      "Explore the portfolio and projects of Adil Khan, a full-stack developer specializing in Next.js and React.",
+    url: "/",
+    siteName: "Adil Khan Portfolio",
+    images: [
+      {
+        url: "/images/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Adil Khan Full-Stack Developer Portfolio",
+      },
+    ],
     locale: "en_US",
+    type: "website",
   },
 
   twitter: {
     card: "summary_large_image",
-    title: `${siteConfig.name} | ${siteConfig.role}`,
-    description: siteConfig.description,
+    title: "Adil Khan | Full-Stack Developer",
+    description:
+      "Explore the portfolio and projects of Adil Khan, a Next.js and React developer.",
+    images: ["/images/og-image.png"],
   },
 
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+    },
   },
 };
 
