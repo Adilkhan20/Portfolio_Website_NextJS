@@ -1,18 +1,54 @@
 "use client";
 
+import { useState } from "react";
 import Container from "@/components/ui/Container";
-import ButtonLink from "@/components/ui/ButtonLink";
 import { siteConfig } from "@/data/site";
-import { motion } from "framer-motion";
+
+function IconBox({ children }) {
+  return (
+    <div className="flex-shrink-0 flex items-center justify-center size-10 rounded-lg bg-gray-100 text-gray-600">
+      {children}
+    </div>
+  );
+}
 
 export default function ContactCTA() {
-  const whatsappUrl = `https://wa.me/${siteConfig.whatsapp.number}?text=${encodeURIComponent(siteConfig.whatsapp.message)}`;
+  const whatsappUrl = `https://wa.me/${siteConfig.whatsapp.number}?text=${encodeURIComponent(
+    siteConfig.whatsapp.message,
+  )}`;
 
-  const contactOptions = [
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    projectType: "",
+    message: "",
+  });
+
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const subject = encodeURIComponent(
+      form.projectType
+        ? `Project inquiry: ${form.projectType}`
+        : "Project inquiry",
+    );
+    const body = encodeURIComponent(
+      `Name: ${form.name}\nEmail: ${form.email}\nProject Type: ${form.projectType}\n\n${form.message}`,
+    );
+    window.location.href = `mailto:${siteConfig.email}?subject=${subject}&body=${body}`;
+  };
+
+  const contactItems = [
     {
+      label: "Email",
+      value: siteConfig.email,
+      href: `mailto:${siteConfig.email}`,
       icon: (
         <svg
-          className="w-5 h-5"
+          className="h-5 w-5"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -25,29 +61,14 @@ export default function ContactCTA() {
           />
         </svg>
       ),
-      label: "Email",
-      value: siteConfig.email,
-      href: `mailto:${siteConfig.email}?subject=Project inquiry`,
-      color: "from-teal-400 to-teal-500",
     },
     {
-      icon: (
-        // WhatsApp Icon
-        <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
-        </svg>
-      ),
-      label: "WhatsApp",
-      value: "03307992299",
-      href: whatsappUrl,
-      color: "from-green-400 to-green-500",
-      target: "_blank",
-      rel: "noopener noreferrer",
-    },
-    {
+      label: "Phone",
+      value: siteConfig.phone || "0330-799-2299",
+      href: `tel:${siteConfig.phone || "+923307992299"}`,
       icon: (
         <svg
-          className="w-5 h-5"
+          className="h-5 w-5"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -56,279 +77,167 @@ export default function ContactCTA() {
             strokeLinecap="round"
             strokeLinejoin="round"
             strokeWidth={1.5}
-            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+            d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
           />
         </svg>
       ),
-      label: "Response Time",
-      value: "Within 24 hours",
-      href: "#",
-      color: "from-purple-400 to-purple-500",
+    },
+    {
+      label: "GitHub",
+      value: siteConfig.social.github,
+      href: siteConfig.social.github,
+      icon: (
+        <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+        </svg>
+      ),
+    },
+    {
+      label: "LinkedIn",
+      value: siteConfig.social.linkedin,
+      href: siteConfig.social.linkedin,
+      icon: (
+        <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+        </svg>
+      ),
+    },
+    {
+      label: "WhatsApp",
+      value: "Message on WhatsApp",
+      href: whatsappUrl,
+      target: "_blank",
+      icon: (
+        <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347M12.05 21.785h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884" />
+        </svg>
+      ),
     },
   ];
 
   return (
-    <section
-      id="contact"
-      className="scroll-mt-24 relative overflow-hidden py-20 sm:py-24 lg:py-32"
-    >
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-to-br from-teal-500/10 via-blue-500/5 to-purple-500/10 rounded-full blur-3xl opacity-50" />
-        <motion.div
-          animate={{
-            scale: [1, 1.2, 1],
-            opacity: [0.3, 0.5, 0.3],
-          }}
-          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-20 right-20 w-72 h-72 bg-teal-400/10 rounded-full blur-2xl"
-        />
-        <motion.div
-          animate={{
-            scale: [1.2, 1, 1.2],
-            opacity: [0.3, 0.5, 0.3],
-          }}
-          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute bottom-20 left-20 w-72 h-72 bg-blue-400/10 rounded-full blur-2xl"
-        />
-      </div>
+    <section id="contact" className="scroll-mt-24 bg-gray-50 py-16 sm:py-20">
+      <Container>
+        <div className="max-w-2xl mx-auto text-center">
+          <span className="mb-3 text-2xl font-bold tracking-[1em] text-black uppercase">
+            Contact
+          </span>
+          <h2 className="mt-3 text-1xl sm:text-2xl font-bold text-gray-900">
+            Have a project or opportunity?
+            <br />
+            Let&apos;s talk.
+          </h2>
+          <p className="mt-4 text-base text-gray-600">
+            Reach out for full-stack development roles, freelance projects, or
+            collaboration.
+          </p>
+        </div>
 
-      <Container className="relative z-10">
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] }}
-          className="relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-slate-900/80 via-slate-900/90 to-slate-950/80 backdrop-blur-xl"
-        >
-          <div className="absolute inset-0 opacity-5">
-            <div
-              className="absolute inset-0"
-              style={{
-                backgroundImage: `radial-gradient(circle at 2px 2px, rgba(94,234,212,0.3) 1px, transparent 0)`,
-                backgroundSize: "40px 40px",
-              }}
-            />
+        <div className="mt-12 grid gap-6 lg:grid-cols-[1fr_1.4fr]">
+          <div className="space-y-3">
+            {contactItems.map((item) => (
+              <a
+                key={item.label}
+                href={item.href}
+                target={item.target}
+                rel={item.target ? "noopener noreferrer" : undefined}
+                className="flex items-center gap-4 rounded-xl border border-gray-200 bg-white p-4 hover:border-gray-300 transition-colors"
+              >
+                <IconBox>{item.icon}</IconBox>
+                <div className="min-w-0">
+                  <p className="text-sm font-semibold text-gray-900">
+                    {item.label}
+                  </p>
+                  <p className="text-sm text-gray-500 truncate">{item.value}</p>
+                </div>
+              </a>
+            ))}
           </div>
-          <div className="absolute -top-40 -right-40 w-96 h-96 bg-teal-500/20 rounded-full blur-3xl" />
-          <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl" />
-
-          <div className="relative p-8 sm:p-12 lg:p-16">
-            <div className="grid gap-12 lg:grid-cols-5 lg:gap-16">
-              <div className="lg:col-span-3">
-                <motion.div
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.2, duration: 0.5 }}
-                  className="inline-flex items-center gap-2 rounded-full border border-teal-300/20 bg-teal-300/10 px-4 py-1.5 backdrop-blur-sm mb-6"
-                >
-                  <span className="relative flex h-2 w-2">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-teal-400 opacity-75" />
-                    <span className="relative inline-flex rounded-full h-2 w-2 bg-teal-500" />
-                  </span>
-                  <span className="text-xs font-semibold text-teal-300 tracking-wide">
-                    Let's Collaborate
-                  </span>
-                </motion.div>
-                <motion.h2
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.3, duration: 0.5 }}
-                  className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white leading-tight tracking-tight"
-                >
-                  Have a Project
-                  <span className="block mt-2 bg-gradient-to-r from-teal-300 via-blue-300 to-purple-300 bg-clip-text text-transparent">
-                    in Mind?
-                  </span>
-                </motion.h2>
-                <motion.p
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.4, duration: 0.5 }}
-                  className="mt-6 text-base sm:text-lg leading-8 text-slate-300 max-w-xl"
-                >
-                  Let's discuss your vision and transform it into a powerful
-                  digital reality. I'm excited to hear about your project and
-                  explore how we can achieve your goals together.
-                </motion.p>
-
-                {/* Quick Contact Options */}
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.5, duration: 0.5 }}
-                  className="mt-8 grid gap-3 sm:grid-cols-3"
-                >
-                  {contactOptions.map((option, index) => (
-                    <a
-                      key={option.label}
-                      href={option.href}
-                      target={option.target || undefined}
-                      rel={option.rel || undefined}
-                      className="group flex items-start gap-3 rounded-xl border border-white/10 bg-white/5 p-4 backdrop-blur-sm hover:bg-white/10 hover:border-white/20 transition-all duration-300"
-                    >
-                      <div
-                        className={`flex-shrink-0 size-8 rounded-lg bg-gradient-to-br ${option.color} flex items-center justify-center text-white shadow-lg`}
-                      >
-                        {option.icon}
-                      </div>
-                      <div className="min-w-0">
-                        <p className="text-xs font-medium text-slate-400 group-hover:text-slate-300 transition-colors">
-                          {option.label}
-                        </p>
-                        <p className="text-xs text-slate-500 truncate mt-0.5 group-hover:text-slate-400 transition-colors">
-                          {option.value}
-                        </p>
-                      </div>
-                    </a>
-                  ))}
-                </motion.div>
+          <form
+            onSubmit={handleSubmit}
+            className="rounded-xl border border-gray-200 bg-white p-6 sm:p-8"
+          >
+            <div className="grid gap-5 sm:grid-cols-2">
+              <div>
+                <label className="block text-sm font-semibold text-gray-900 mb-1.5">
+                  Name
+                </label>
+                <input
+                  type="text"
+                  name="name"
+                  value={form.name}
+                  onChange={handleChange}
+                  placeholder="Your name"
+                  required
+                  className="w-full rounded-md border border-gray-300 bg-gray-50 px-3 py-2.5 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-900"
+                />
               </div>
-
-              {/* Right Content - CTA Actions */}
-              <div className="lg:col-span-2 flex flex-col justify-center space-y-6">
-                {/* Primary CTA - WhatsApp */}
-                <motion.div
-                  initial={{ opacity: 0, x: 30 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.4, duration: 0.6 }}
-                  className="space-y-4"
-                >
-                  {/* WhatsApp Button */}
-                  <a
-                    href={whatsappUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-green-400 to-green-500 hover:from-green-500 hover:to-green-600 text-white px-6 py-4 text-lg font-semibold shadow-lg shadow-green-500/20 hover:shadow-xl hover:shadow-green-500/30 transition-all duration-300 hover:scale-105"
-                  >
-                    <svg
-                      className="w-6 h-6"
-                      fill="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
-                    </svg>
-                    Chat on WhatsApp
-                    <motion.span
-                      animate={{ x: [0, 5, 0] }}
-                      transition={{ duration: 1.5, repeat: Infinity }}
-                    >
-                      →
-                    </motion.span>
-                  </a>
-
-                  {/* Email Button */}
-                  <ButtonLink
-                    href={`mailto:${siteConfig.email}?subject=Project inquiry`}
-                    className="w-full bg-gradient-to-r from-teal-400 to-blue-500 hover:from-teal-500 hover:to-blue-600 text-white border-0 shadow-lg shadow-teal-500/20 hover:shadow-xl hover:shadow-teal-500/30 text-lg py-4"
-                  >
-                    <span className="flex items-center justify-center gap-2">
-                      Send Email
-                      <motion.span
-                        animate={{ x: [0, 5, 0] }}
-                        transition={{ duration: 1.5, repeat: Infinity }}
-                      >
-                        →
-                      </motion.span>
-                    </span>
-                  </ButtonLink>
-
-                  {/* Copy Email Button */}
-                  <button
-                    onClick={() => {
-                      navigator.clipboard.writeText(siteConfig.email);
-                      // Optional: Add a toast notification
-                      alert("Email copied to clipboard!");
-                    }}
-                    className="w-full flex items-center justify-center gap-2 rounded-full border border-white/20 bg-white/5 px-6 py-3 text-sm font-semibold text-white hover:border-teal-300/50 hover:bg-white/10 transition-all duration-300 backdrop-blur-sm"
-                  >
-                    <svg
-                      className="w-4 h-4"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
-                      />
-                    </svg>
-                    Copy Email Address
-                  </button>
-                </motion.div>
+              <div>
+                <label className="block text-sm font-semibold text-gray-900 mb-1.5">
+                  Email
+                </label>
+                <input
+                  type="email"
+                  name="email"
+                  value={form.email}
+                  onChange={handleChange}
+                  placeholder="you@example.com"
+                  required
+                  className="w-full rounded-md border border-gray-300 bg-gray-50 px-3 py-2.5 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-900"
+                />
               </div>
             </div>
-          </div>
 
-          {/* Bottom Decorative Border */}
-          <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-teal-300/30 to-transparent" />
-        </motion.div>
+            <div className="mt-5">
+              <label className="block text-sm font-semibold text-gray-900 mb-1.5">
+                Project Type
+              </label>
+              <input
+                type="text"
+                name="projectType"
+                value={form.projectType}
+                onChange={handleChange}
+                placeholder="Website, app, collaboration"
+                className="w-full rounded-md border border-gray-300 bg-gray-50 px-3 py-2.5 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-900"
+              />
+            </div>
 
-        {/* Trust Indicators */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.8, duration: 0.5 }}
-          className="mt-8 flex flex-wrap items-center justify-center gap-6 text-xs text-slate-500"
-        >
-          <span className="flex items-center gap-2">
-            <svg
-              className="w-4 h-4 text-green-400"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+            <div className="mt-5">
+              <label className="block text-sm font-semibold text-gray-900 mb-1.5">
+                Message
+              </label>
+              <textarea
+                name="message"
+                value={form.message}
+                onChange={handleChange}
+                placeholder="Tell me a little about the project or opportunity."
+                required
+                rows={5}
+                className="w-full rounded-md border border-gray-300 bg-gray-50 px-3 py-2.5 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-900 resize-y"
               />
-            </svg>
-            Quick WhatsApp Reply
-          </span>
-          <span className="hidden sm:block">•</span>
-          <span className="flex items-center gap-2">
-            <svg
-              className="w-4 h-4 text-teal-400"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
+            </div>
+
+            <button
+              type="submit"
+              className="mt-6 inline-flex items-center gap-2 rounded-md bg-gray-900 hover:bg-gray-700 text-white text-sm font-semibold px-5 py-2.5 transition-colors"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-              />
-            </svg>
-            Response within 2-3 hours
-          </span>
-          <span className="hidden sm:block">•</span>
-          <span className="flex items-center gap-2">
-            <svg
-              className="w-4 h-4 text-teal-400"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M13 10V3L4 14h7v7l9-11h-7z"
-              />
-            </svg>
-            Free Consultation
-          </span>
-        </motion.div>
+              Send Message
+              <svg
+                className="h-4 w-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M14 5l7 7m0 0l-7 7m7-7H3"
+                />
+              </svg>
+            </button>
+          </form>
+        </div>
       </Container>
     </section>
   );
